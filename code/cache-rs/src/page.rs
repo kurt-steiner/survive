@@ -27,7 +27,7 @@ impl Address {
 
 struct PageTable {
     length: u32, // 页表长度
-    data: [u32; PAGE_TABLE_SIZE] // 页表数据，对应 map<页号,内存块号>
+    data: [u32; PAGE_TABLE_SIZE] // 页表数据，对应 map<页号,内存块号>，页号由data数组的索引隐含给出
 }
 
 struct Progress {
