@@ -1,5 +1,5 @@
 use crate::{RawBlock, Address};
-use crate::file::DirectoryEntry;
+use super::file::DirectoryEntry;
 
 // 物理存储块
 pub(crate) struct DataBlock(pub RawBlock); // 用来存储数据，每个可以存储 4KB 个数据，结构体很大，不要作死运行！！
