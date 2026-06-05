@@ -1,0 +1,2 @@
+CompileFlags:
+  CompilationDatabase: build # 指向你的构建目录
