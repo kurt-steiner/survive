@@ -63,51 +63,56 @@ TCP 协议需要描述 连接 和 传输
 
 ### 发起连接 -- 投简历给 公司 求职
 
-1. 客户端发起连接请求  
+![image](../images/tcp-flow-1.png)
+
+1. **客户端**发起连接请求  
    我精心准备好了简历，投给一家公司  
    此时，我的简历是这样的
 
    ```json
-    request {
+    client.request {
         SYN: 1, // 表示发起连接请求
-        seq: x // 随机的 x
+        seq: x // '嫌疑人'x: 你好，我想投简历
     }
    ```
 
-2. 服务端同意连接  
+2. **服务端**同意连接  
    公司收到了，发起录用通知
    此时，公司的回复我是这样的
 
    ```json
-    response {
+    server.response {
         SYN: 1, 
         ACK: 1, // SYN = 1 && ACK = 1 表示对 请求的回复
-        ack: x + 1, // request.seq + 1, 表示对 `seq = x` 的简历确认
-        seq: y // 随机的 y，问我什么时候可以上班
+        ack: x + 1, // 你好，嫌疑人x
+        seq: y // 我是人事 y，你什么时候来上班
     }
    ```
 
-3. 客户端告知服务端连接成功，可以传输数据  
+3. **客户端**告知服务端连接成功，可以传输数据  
    我收到了 公司的录用通知，并告诉公司我马上去上班  
    此时我回复公司
 
    ```json
-    response_of_response {
+    client.response {
         ACK: 1,
-        ack: y + 1, // response.seq + 1, 表示对 公司录用 的回复
-        seq: x + 1 // response.ack, 表示我 马上上班
+        ack: y + 1, // ACK = 1 && ack = y + 1，收到人事 y 的询问
+        seq: x + 1 // 收到你的询问, 我马上去上班
     }
    ```
 
 ### 断开连接
 
+![image](../images/tcp-flow--2.png)
+TODO: 释放流程图
+
 1. 客户端发起停止连接请求，关闭对服务端的连接，并停止发送数据  
    这是家破公司，我向公司提出离职
 
    ```json
-    request_fin {
+    client.request_fin {
         FIN: 1, // 表示停止
-        seq: x // 表示 离职人员编号 是 x
+        seq: x // 我是 嫌疑人x，我要离职
     }
    ```
 
@@ -115,10 +120,10 @@ TCP 协议需要描述 连接 和 传输
    公司收到离职通知，表示收到
 
    ```json
-    response_1 {
+    server.response {
         ACK: 1, // 表示回复
         ack: x + 1, // 表示对 `x` 的离职回复
-        seq: y // 这个可以忽略
+        seq: y // 我是人事 y，我收到了你的离职请求
     }
    ```
 
@@ -126,11 +131,11 @@ TCP 协议需要描述 连接 和 传输
    公司启动员工离职程序，并表示，在离职前，让我把工作交接完
 
    ```json
-    response_2 {
+    server.response {
         FIN: 1, // 启动离职程序
         ACK: 1, // 表示回复
         ack: x + 1, // 表示这是对 `x` 的离职回复
-        seq: w // 这个是无关字段，由于数据依然在传输，所以会变
+        seq: w // 通知 嫌疑人 x 进行交接工作
     }
    ```
 
@@ -138,10 +143,10 @@ TCP 协议需要描述 连接 和 传输
    我他妈终于解脱了，对着老板比了个中指 🖕
 
    ```json
-    response {
+    client.response {
         ACK: 1,  // 表示回复
-        ack: w + 1, // response_2.seq ，表示对 离职通知 的回复
-        seq: x + 1, // response_2.ack ，表示 你们另请高明吧
+        ack: w + 1, // 嫌疑人 `x` 交接完最后的工作
+        seq: x + 1, // 嫌疑人 `x` 表示，你们另请高明吧
     }
    ```
 
