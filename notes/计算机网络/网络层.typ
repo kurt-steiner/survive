@@ -9,7 +9,7 @@
 #set page(margin: 1cm)
 #set heading(numbering: "1.")
 
-#image("../images/网络层.png")
+#image("/images/网络层.png")
 
 
 #let ip-box(body) = {
@@ -114,7 +114,7 @@ dataframe: {
 
 === RIP/距离向量/应用层协议 with UDP
 
-#image("../images/routing-rip.png")
+#image("/images/routing-rip.png")
 
 距离-向量协议 用 网络之间的跳数 作为评价标准，他这样回答了上述问题
 
@@ -127,7 +127,7 @@ dataframe: {
 
 === OSPF/迪杰斯特拉/网络层协议
 
-#image("../images/routing-ospf.png")
+#image("/images/routing-ospf.png")
 
 链路状态路由协议 使用 网络延迟 或 其它标准来评价网络质量，他这样回答上述问题
 
@@ -180,7 +180,7 @@ BGP 有如下报文，我们用外交的视角来看
 
 在网络发展早期，工程师们是这样对IP地址进行分类的
 
-#image("../images/IP地址分类.png", height: 30%)
+#image("/images/IP地址分类.png", height: 30%)
 
 其中常用的是 A, B, C 三个分类，D 是多播地址(后续会谈到)，E 指的是 `Experiment` ，表示实验地址，保留不用
 
@@ -281,7 +281,7 @@ NAT 主机将嵌套的IP地址与其端口绑定，将 IP数据报 通过端口�
 受到数据链路层的限制，IP协议中规定了最大传输单元MTU，倘若数据过长
 (包括首部长度)，就要进行分片，我们先看看分片过程
 
-#image("../images/数据分片.drawio.png")
+#image("/images/数据分片.drawio.png")
 
 
 假设 MTU 是 1000Byte，而我们要传输 2500Byte 长度的数据，此时需要进行数据分片，并且遵循以下规则
@@ -358,7 +358,7 @@ while True:
 同样的，福建这边的运营商会把 *源IP* 为 `IP_B` 的网络请求，通过隧道转发给 浙江这边的运营商，浙江这边的运营商会将网络请求 发给 服务器，继续交互
 
 过程可以参考这个图
-#image("../images/移动IP.png", height: 30%)
+#image("/images/移动IP.png", height: 30%)
 
 *补充*
 隧道技术，就是 将一个IP数据报看作数据，封装到有一个IP数据报中

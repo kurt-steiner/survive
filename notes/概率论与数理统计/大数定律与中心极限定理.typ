@@ -88,7 +88,7 @@ $
 
 == 列维-林德伯格/构造均值序列
 
-#image("../images/大数定律与中心极限定理.drawio.png")
+#image("/images/大数定律与中心极限定理.drawio.png")
 
 === 介绍
 
@@ -161,7 +161,7 @@ $
 $
 
 #align(center)[
-  #image("../images/大数定律与中心极限定理-第 2 页.drawio.png", height: 30%)
+  #image("/images/大数定律与中心极限定理-第 2 页.drawio.png", height: 30%)
 ]
 
 再次将每个 $"XS"(1)$ 构造成一个序列，其方差依然是 $sigma^2$，依次类推，可以得出\

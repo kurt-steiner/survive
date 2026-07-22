@@ -77,7 +77,7 @@ $
 $
 == 卷积公式
 
-#align(center)[#image("../images/卷积公式_20260630_143505.png", height: 30%, alt: "image")]
+#align(center)[#image("/images/卷积公式_20260630_143505.png", height: 30%, alt: "image")]
 
 
 在 $"xOy"$ 面上，有区域 $D$ 为矩形 $x in [0, 1], y in [0,1]$，二维连续型随机变量 $X, Y$ 的概率密度函数为
@@ -158,7 +158,7 @@ $
 == 题目描述
 
 #align(center)[
-  #image("../images/卷积公式_20260630_143505.png", height: 30%, alt: "image")
+  #image("/images/卷积公式_20260630_143505.png", height: 30%, alt: "image")
 ]
 
 在 $"xOy"$ 面上，有区域 $D$ 为矩形 $x in [0, 1], y in [0,1]$，二维连续型随机变量 $X, Y$ 的概率密度函数为
@@ -193,7 +193,7 @@ $
 
 积分区域画出来是个正方形
 #align(center)[
-  #image("../images/最大最小分布.png", height: 30%)
+  #image("/images/最大最小分布.png", height: 30%)
 ]
 
 
@@ -258,7 +258,7 @@ $
 
 在图像中画出来是
 #align(center)[
-  #image("../images/最大最小积分-2.png", height: 30%)
+  #image("/images/最大最小积分-2.png", height: 30%)
 ]
 现在，概率可以表示为
 $
