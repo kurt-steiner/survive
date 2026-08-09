@@ -15,6 +15,8 @@
 
 #set heading(numbering: "1.")
 
+#outline()
+#pagebreak()
 
 = 引例: 点估计
 
@@ -159,16 +161,19 @@ $
 
 沿用上面的例子，在相亲过程中，女方开始要求对方是200万年薪\
 但据我们所知，在大厂当高级工程师，并有5年工作经验的薪资行情在60万到100万之间，特别牛逼的能到120万，差一点的在50万左右\
-因此，我们有95%的把握确定我们的条件在 50万到110万 这个区间内
+因此，我们有$95%$的把握确定我们的条件在 50万到110万 这个区间内
 
 在这个例子中，置信水平是 $95%$，并且置信区间是 $[50, 110]$
 
-并且，我们完全可以用 $P(hat(theta_1) <= theta <= hat(theta_2)) = 1 - alpha$ 来表示上述的估计情况，其中
-+ $hat(theta_1)$ 是置信下限
-+ $hat(theta_2)$ 是置信上限
-+ $1 - alpha$ 是置信区间，对应的 $alpha$ 有个名词，叫显著性水平 (取名字的人是真该死啊)
+并且，我们完全可以用 $P(hat(theta)_1 <= theta <= hat(theta)_2) = 1 - alpha$ 来表示上述的估计情况，其中
++ $hat(theta)_1$ 是置信下限
++ $hat(theta)_2$ 是置信上限
++ $1 - alpha$ 是#underline[置信区间]，对应的 $alpha$ 有个名词，叫 #underline[显著性水平] (取名字的人是真该死啊)
 
-借用正态分布的常用，普遍性，经过处理后，我们发现某个变量$X$是服从与某个正态分布的，其中期望和方差未知，现在我们任务是如何通过样本 #highlight[估计期望和方差]
+借用正态分布的常用性和普遍性，经过处理后，我们发现总体的变量$X$是服从与某个正态分布的，有$X ~ N(mu, sigma^2)$，其中期望和方差可能未知\
+从总体中提取样本，有样本均值序列中的变量 $overline(X) ~ N(mu, sigma^2/n)$
+
+现在我们任务是 #underline(stroke: 2pt + blue)[如何通过样本 #highlight[估计总体的期望和方差]]
 
 == 估计期望
 
@@ -179,14 +184,226 @@ $
   column-gutter: 0.5cm,
 
   [
-
+    #image("/images/参数估计.png")
   ],
 
   [
-    
+    根据 上$alpha$分位点的定义，我们有
+    $
+      hat(theta)_2 = u(alpha / 2)
+    $
+
+    再有对称，得到
+    $
+      hat(theta)_1 = -u(alpha / 2)
+    $
+
+    #underline(stroke: blue + 2pt)[借助标准正态分布，有]
+    $
+      P(-u(alpha / 2) <= overline(X) <= u(alpha / 2))  = 1-alpha
+    $
+
+    整理后
+    $
+      P(-u(alpha / 2) <= frac(overline(X) - mu, sigma "/" sqrt(n)) <= u(alpha / 2))  = 1-alpha
+    $
   ]
 )
 
+现在再次整理，有
+$
+  P(overline(X) - frac(sigma, sqrt(n)) times u(alpha/2) <= mu <= overline(X) + frac(sigma, sqrt(n)) times u(alpha / 2)) = 1 - alpha
+$
+
+其中 $u(alpha/2)$是 #highlight[标准正态分布]的上$alpha/2$分位点，也可以表示为
+$
+  P(overline(X) - frac(sigma, sqrt(n)) times u(alpha/2, "StdNormal") <= mu <= overline(X) + frac(sigma, sqrt(n)) times u(alpha / 2, "StdNormal")) = 1 - alpha
+$
+
+#line(stroke: green + 2pt, length: 100%)
+
+等等，上面的情况中，好像是需要总体的方差 $sigma^2$ 是已知的，如果 $sigma^2$ 未知呢？\
+根据正态分布总体的抽样，有
+$
+  frac(overline(X) - mu, S "/" sqrt(n)) ~ t(n-1)
+$
+
+其中 $S$ 是样本的标准差，经过整理，有
+$
+  P(overline(X) - frac(S, sqrt(n)) times u(alpha/2, t(n-1)) <= mu <= overline(X) + frac(S, sqrt(n)) times u(alpha / 2, t(n-1))) = 1 - alpha
+$
+
 == 估计方差
 
+与估计期望不同，估计期望时是借助的正态分布，而估计方差时，借助的是卡方分布，对于样本($n$)，有
+$
+frac(n-1, sigma^2) times S^2 ~ chi^2(n-1)
+$
+
+借助卡方分布的图像，有
+#grid(
+  columns: (5fr, 5fr),
+  column-gutter: 0.5cm,
+  [
+    #image("/images/参数估计-第 2 页.png")
+  ],
+
+  [
+    其中，卡方分布的图像明显是不对称的，我们这样做也是装糊涂，还好有错误率兜底\
+    此时，根据上$alpha$分位点的定义，有
+    $
+      &hat(theta)_2& &= u(alpha / 2)& \
+      &hat(theta)_1& &= u(1 - alpha / 2)&
+    $
+
+    现在估计方差，有
+    $
+      P(u(1-alpha/2) <= frac(n - 1, sigma^2) times S^2 <= u(alpha / 2)) = 1-alpha
+    $
+
+    整理后，得到
+    $
+      P(frac((n - 1) S^2, u(alpha/2)) <= sigma^2 <= frac((n-1) S^2, u(1 - alpha /2))) = 1-alpha
+    $
+  ]
+)
+
+其中 $u(alpha/2)$ 是 $chi^2(n-1)$ 的上$alpha/2$分位点，也就是
+$
+  P(frac((n - 1) S^2, u(alpha/2, chi^2(n-1))) <= sigma^2 <= frac((n-1) S^2, u(1 - alpha /2, chi^2(n-1)))) = 1-alpha
+$
+
+#line(stroke: green + 2pt, length: 100%)
+我们发现，上面这种情况中，压根就没有用到总体的期望$mu$，也就是说，此时总体的期望是未知的\
+那如果总体的期望是已知的呢？
+
+对于样本，刚才我们用的是
+$
+  frac((n-1) S^2, sigma^2) ~ chi^2(n-1)
+$
+
+也就是
+$
+  frac(1, sigma^2)  times sum_(i=1)^(n) ("sample"(X_i) - overline(X))^2 ~ chi^2(n-1)
+$
+
+现在我们用另一个结论
+$
+  frac(1, sigma^2) times sum_(i=1)^(n) ("sample"(X_i) - mu)^2 ~ chi^2(n) 
+$
+
+再次进行推导，有
+$
+  P(frac(sum_(i=1)^(n) (X_i - mu)^2, u(alpha/2, chi^2(n))) <= sigma^2 <= frac(sum_(i=1)^(n) (X_i - mu)^2, u(1 - alpha /2, chi^2(n)))) = 1-alpha
+$
+
+
+这几个逼玩意是真难记啊，建议当场推导
+
 = 补充：连续型分布的最大似然估计
+
+以均匀分布为例，有概率分布在 $[0, a]$ 之间，其概率密度函数为
+$
+  f(x) = cases(1 "/" a " " x in [0, a], 0 " " "else")
+$
+
+从总体中提取样本，得到 $X_1, X_2, X_3, dots, X_n$，其最大似然函数为
+$
+  L(a) = frac(1, a^n)
+$
+
+使其最大，需要使 $a$ 最小
+
+#import "@preview/cetz:0.5.2": canvas
+#import "@preview/cetz-plot:0.1.4": plot
+
+#align(center)[
+#canvas({
+  plot.plot(
+    size: (8, 5),
+    x-label: $X$,
+    y-label: $P(X)$,
+    y-max: 1,
+    y-min: 0,
+    x-max: 10,
+    x-min: 0,
+    x-tick-step: none,
+    y-tick-step: 0.5,
+    axis-style: "left",
+
+    x-ticks: (
+      (1, [$X_1$]),
+      (2, [$X_2$]),
+      (3, [$X_3$]),
+      (4, [$X_4$]),
+
+      (7, [$X_n$]),
+      (8, [$<-$]),
+      (9, [$<-$]),
+      (10, [$a$])
+    ),
+
+    
+    {
+      // Main tanh curve
+      plot.add(
+        style: (stroke: blue + 1.5pt),
+        domain: (0, 11),
+        samples: 100,
+        x => 2/3,
+      )
+
+      plot.add(
+        style: (
+          stroke: (paint: red, dash: "dashed")
+        ),
+        
+        domain: (0, 1),
+        samples: 2,
+        y => (10, y)
+      )
+
+      plot.add(
+        style: (
+          stroke: (paint: red, dash: "dashed")
+        ),
+        
+        domain: (0, 1),
+        samples: 2,
+        y => (9, y)
+      )
+
+      plot.add(
+        style: (
+          stroke: (paint: red, dash: "dashed")
+        ),
+        
+        domain: (0, 1),
+        samples: 2,
+        y => (8, y)
+      )
+
+      plot.add(
+        style: (
+          stroke: (paint: red, dash: "dashed")
+        ),
+        
+        domain: (0, 1),
+        samples: 2,
+        y => (7, y)
+      )
+    }
+  )
+})
+]
+
+
+将 $a$ 往左移动，最大只能移动到 $max("samples"(X_1, X_2, dots, X_n))$ 的位置，否则样本不合法，此时最大似然估计成立
+
+= 补充: 上$alpha$分位点
+
+$
+  P(X >= u(alpha)) = alpha
+$
+
+我们称 $u(alpha)$ 为上$alpha$分位点

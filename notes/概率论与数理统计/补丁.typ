@@ -18,10 +18,10 @@
 = 协方差
 $
   Z = (X - E(X)) times (Y - E(Y)) \
-  cov(X, Y) = E(Z)
+  "cov"(X, Y) = E(Z)
 $
 = 相关系数
 
 $
-  rho = frac(cov(X, Y), sqrt(D(X)) times sqrt(D(Y)))
+  rho = frac("cov"(X, Y), sqrt(D(X)) times sqrt(D(Y)))
 $
