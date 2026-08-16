@@ -7,7 +7,7 @@
   size: 12pt,
 )
 
-#set page(margin: 1cm)
+#set page(margin: 1cm, paper: "a4")
 #set heading(numbering: "1.")
 #outline()
 #pagebreak()

@@ -6,8 +6,7 @@
   ),
   size: 10pt,
 )
-
-#set page(margin: 1cm, height: auto)
+#set page(margin: 1cm, paper: "a4")
 #set enum(
   indent: 1.8em,      // 整体缩进
   body-indent: 0.6em, // 编号与文字间距
