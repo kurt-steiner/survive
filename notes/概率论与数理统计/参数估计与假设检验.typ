@@ -1,4 +1,4 @@
-#set document(title: "参数估计")
+#set document(title: "参数估计与假设检验")
 #set text(
   font: (
     (name: "JetBrains Mono", covers: "latin-in-cjk"),
@@ -6,7 +6,7 @@
   ),
   size: 10pt,
 )
-#set page(margin: 1cm, paper: "a4")
+#set page(margin: 1cm, paper: "a4", height: auto)
 #set enum(
   indent: 1.8em,      // 整体缩进
   body-indent: 0.6em, // 编号与文字间距
@@ -16,6 +16,8 @@
 
 #outline()
 #pagebreak()
+
+#image("/images/参数估计与假设检验.png")
 
 = 引例: 点估计
 
@@ -158,6 +160,8 @@ $
 
 = 区间估计
 
+(区间估计需要用到 正态总体的抽样分布，请看 #link("file://./总体与样本.typ")[总体与样本这一章节])
+
 沿用上面的例子，在相亲过程中，女方开始要求对方是200万年薪\
 但据我们所知，在大厂当高级工程师，并有5年工作经验的薪资行情在60万到100万之间，特别牛逼的能到120万，差一点的在50万左右\
 因此，我们有$95%$的把握确定我们的条件在 50万到110万 这个区间内
@@ -299,6 +303,92 @@ $
 
 这几个逼玩意是真难记啊，建议当场推导
 
+= 假设检验
+
+某次考试的学生成绩服从正态分布，从中随机抽取36位考生的成绩，算得平均成绩为66.5分，标准差为15分，问：\
+在显著性水平0.05下，是否可以认为这次考试全体考生的平均成绩为70分？并给出检验过程
+
+附表: t分布下分位点
+$
+P{t(n) <= t_p(n)} = p
+$
+
+#align(center)[
+  #table(
+    columns: 3,
+    align: center + horizon,
+    [$n "\\" P$ ],[0.95],[0.975],
+    [35],[1.6896],[2.0301],
+    [36],[1.6883],[2.0281]
+  )
+]
+
+#line(length: 100%)
+
+#grid(
+  columns: (5fr, 5fr),
+  column-gutter: 0.5cm,
+
+  [
+    我们给出假设$H_0$为 此次考试全体考试的平均成绩为70分，即$mu = 70$，现在有
+
+  #align(center)[
+    #table(
+      columns: 3,
+      align: center + horizon,
+      [假设],[判断 $mu = 70$],[判断 $mu != 70$],
+      [$mu = 70$],[$mu = 70$],[$mu != 70$],
+      [$mu != 70$],[$mu = 70$],[$mu != 70$],
+    )
+  ]
+
+  其中显著性水平(即错误率)体现在
+  $
+    P("判断" mu != 70 | "假设" mu = 70) = alpha
+  $
+
+  ],
+
+  [
+    我们在区间估计中，有置信区间为
+    $
+      P(hat(theta)_1 <= theta <= hat(theta)_2) = 1-alpha
+    $
+
+    当置信区间的上下限对称时，有
+    $
+      P(-u(alpha / 2) <= theta <= u(alpha / 2)) = 1-alpha
+    $
+
+    那么显著性水平$alpha$体现在
+    $
+      P(abs(theta) >= u(alpha / 2)) = alpha
+    $
+  ]
+)
+
+
+#line(length: 100%)
+
+
+对于我们的假设，借助t分布，有
+$
+T = frac(overline(X) - mu, S "/" sqrt(n)) ~ t(n - 1)
+$
+
+如果$T$落在落在置信区间时，有
+$
+P(-u(t(n-1), alpha / 2) <= frac(overline(X) - mu, S "/" sqrt(n)) <= u(t(n-1), alpha / 2)) = 1 - alpha
+$
+
+即判断
+$
+  abs(frac(overline(X) - mu, S "/" sqrt(n))) <= u(t(n-1), alpha / 2)
+$
+
+其中，$mu = 70$是我们的假设，需要带入计算，并且，我们还需要将 *上$alpha$分位点* 和 *下$alpha$分位点相互转换*
+
+
 = 补充：连续型分布的最大似然估计
 
 以均匀分布为例，有概率分布在 $[0, a]$ 之间，其概率密度函数为
@@ -399,10 +489,18 @@ $
 
 将 $a$ 往左移动，最大只能移动到 $max("samples"(X_1, X_2, dots, X_n))$ 的位置，否则样本不合法，此时最大似然估计成立
 
-= 补充: 上$alpha$分位点
+= 补充: 上$alpha$分位点 和 下$alpha$分位点
 
+当
 $
   P(X >= u(alpha)) = alpha
 $
 
 我们称 $u(alpha)$ 为上$alpha$分位点
+
+当
+$
+  P(X <= d(alpha)) = alpha
+$
+
+我们称 $d(alpha)$ 为下$alpha$分位点

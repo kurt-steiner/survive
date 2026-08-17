@@ -7,7 +7,7 @@
   size: 12pt,
 )
 
-#set page(margin: 1cm, paper: "a4")
+#set page(margin: 1cm, paper: "a4", height: auto)
 #set heading(numbering: "1.")
 #outline()
 #pagebreak()
@@ -17,7 +17,10 @@
 
 = 大数定律
 
-大数定律 说的东西只有一个 ———— #underline(stroke: red + 2pt)[均值趋于分布的期望]
+大数定律 说的东西只有一个
+$
+  lim_(n -> +infinity) overline(X) ->^P mu
+$
 
 == 切比雪夫大数定律/独立，不同分布
 
@@ -84,34 +87,48 @@ $
 
 = 中心极限定理
 
-在教材上描述了两种中心极限定理
+中心极限定理，说人话就一件事，对于均值序列 $overline(X)$
+$
+overline(X) ~ N(mu, sigma^2 "/" n)  
+$
+
+而在教材上描述了两种中心极限定理
 
 == 列维-林德伯格/构造均值序列
 
-#image("/images/大数定律与中心极限定理.drawio.png")
+#grid(
+  columns: (5fr, 5fr),
+  column-gutter: 1cm,
 
-=== 介绍
+  [
+    #image("/images/大数定律与中心极限定理.drawio.png")
+  ],
+  [
+    从一个分布(期望为 $mu$，方差为 $mu^2$) 取出 $n$ 个数据
 
-从一个分布(期望为 $mu$，方差为 $mu^2$) 取出 $n$ 个数据
+    ```ada
+    XS: array(1..n) of Integer
+    ```
 
-```ada
-XS: array(1..n) of Integer
-```
+    并构造均值
+    ```ada
+    Y := sum(XS) / n
+    ```
 
-并构造均值
-```ada
-Y := sum(XS) / n
-```
+    重复多次，构造出关于 均值的序列 `YS`，那么这个均值序列依概率趋向于 正态分布，其期望为 $mu$，方差为 $frac(sigma^2, n)$，即
+    $
+      Y ~ N(mu, frac(sigma^2, n))
+    $
 
-重复多次，构造出关于 均值的序列 `YS`，那么这个均值序列依概率趋向于 正态分布，其期望为 $mu$，方差为 $frac(sigma^2, n)$，即
-$
-  Y ~ N(mu, frac(sigma^2, n))
-$
+    将正态分布标准化，有
+    $
+      frac(Y - mu, sqrt(frac(sigma^2, n))) -> ^P phi(0, 1)
+    $
+  ]
+)
 
-将正态分布标准化，有
-$
-  frac(Y - mu, sqrt(frac(sigma^2, n))) -> ^P phi(0, 1)
-$
+
+
 === 推导
 
 对于均值 $Y$，有
@@ -148,21 +165,33 @@ end;
   ```
 ]
 ]
-那么，对于均值序列 `YS`，有
 
-$
-  "YS" = frac(1, n) times mat(
-    "XS"(1) + "XS"(2) + dots + "XS"(n);
-    "XS"(1) + "XS"(2) + dots + "XS"(n);
-    "XS"(1) + "XS"(2) + dots + "XS"(n);
-    dots;
-    "XS"(1) + "XS"(2) + dots + "XS"(n);
-  )
-$
+#grid(
+  columns: (5fr, 5fr),
+  column-gutter: 0.5cm,
 
-#align(center)[
-  #image("/images/大数定律与中心极限定理-第 2 页.drawio.png", height: 30%)
-]
+  [
+    那么，对于均值序列 `YS`，有
+    $
+      "YS" = frac(1, n) times mat(
+        "XS"(1) + "XS"(2) + dots + "XS"(n);
+        "XS"(1) + "XS"(2) + dots + "XS"(n);
+        "XS"(1) + "XS"(2) + dots + "XS"(n);
+        dots;
+        "XS"(1) + "XS"(2) + dots + "XS"(n);
+      )
+    $
+
+  ],
+
+  [
+    #image("/images/大数定律与中心极限定理-第 2 页.drawio.png")
+  ]
+)
+
+
+
+
 
 再次将每个 $"XS"(1)$ 构造成一个序列，其方差依然是 $sigma^2$，依次类推，可以得出\
 
@@ -181,7 +210,7 @@ $
 
 == 棣弗莫-拉普拉斯/被忽略的二项分布
 
-我们忽略了一件事，我们完全可以从 二项分布$B(n, p)$推导出 正态分布，其期望和方差是 $n p, n p (1 - p)$\
+我们忽略了一件事，我们完全可以从 二项分布$B(n, p)$推导出正态分布，其期望和方差是$n p, n p (1 - p)$\
 那么对于 $X ~ B(n, p)$ 来说，有
 $
   X ~ N(n p, n p (1 - p))

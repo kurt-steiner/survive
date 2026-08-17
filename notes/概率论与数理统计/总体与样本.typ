@@ -140,7 +140,7 @@ $
   ],
 
   [
-    === 结论二/不知总体的期望
+    === 结论二/不知总体的期望/借助样本期望
 
     根据大数定律，均值序列的期望依概率收敛于总体的期望，即
     $
@@ -210,6 +210,14 @@ $
 $
   frac(overline(X) - mu, sigma "/" sqrt(n)) "/" frac(S, sigma) = frac(overline(X) - mu, S "/" sqrt(n)) ~ t(n - 1)
 $
+#line(length: 100%)
+
+等等，这个形式怎么这么熟悉？对于均值序列有 $overline(X) ~ N(mu, sigma^2 "/" n)$，对其标准化后，有
+$
+  frac(overline(X) - mu, sigma "/" sqrt(n)) ~ N(0, 1)
+$
+
+看来这个t分布可以看作残缺的标准正态分布
 
 = 补充: 样本的统计量
 
